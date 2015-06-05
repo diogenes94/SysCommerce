@@ -12,6 +12,7 @@ import br.com.utils.FormataData;
 import br.com.utils.ValidaData;
 import br.com.utils.Validacoes;
 import java.awt.Frame;
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -31,6 +32,7 @@ public class TelaCliente extends javax.swing.JDialog {
      */
     ClienteModel cli = new ClienteModel();
     Frame pai;
+
     ;
     
     public TelaCliente(java.awt.Frame parent, boolean modal) {
@@ -194,6 +196,12 @@ public class TelaCliente extends javax.swing.JDialog {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Pesquisar"));
 
+        jTPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTPesquisaKeyReleased(evt);
+            }
+        });
+
         jBBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/magnifying47.png"))); // NOI18N
         jBBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -284,8 +292,19 @@ public class TelaCliente extends javax.swing.JDialog {
         }
 
         jTNome.setBackground(new java.awt.Color(204, 255, 255));
+        jTNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTNomeKeyReleased(evt);
+            }
+        });
 
         jLabel4.setText("RG :");
+
+        jTRg.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTRgKeyTyped(evt);
+            }
+        });
 
         jLabel5.setText("Data de Nascimento :");
 
@@ -299,11 +318,28 @@ public class TelaCliente extends javax.swing.JDialog {
 
         jLabel11.setText("Naturalidade:");
 
+        jTNaturalidade.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTNaturalidadeKeyReleased(evt);
+            }
+        });
+
         jLabel6.setText("Inscrição Estadual :");
 
         jTIE.setBackground(new java.awt.Color(204, 255, 255));
+        jTIE.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTIEKeyTyped(evt);
+            }
+        });
 
         jLabel10.setText("Fantasia :");
+
+        jTNomeFantasia.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTNomeFantasiaKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -402,15 +438,33 @@ public class TelaCliente extends javax.swing.JDialog {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Localização"));
 
+        jTCidade.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTCidadeKeyReleased(evt);
+            }
+        });
+
         jLabel16.setText("Endereço :");
 
         jLabel18.setText("Estado :");
+
+        jTBairro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTBairroKeyReleased(evt);
+            }
+        });
 
         jLabel17.setText("Cidade :");
 
         jLabel20.setText("Bairro :");
 
         jLabel19.setText("Numero :");
+
+        jTEndereco.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTEnderecoKeyReleased(evt);
+            }
+        });
 
         jComboEstado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO" }));
 
@@ -423,6 +477,12 @@ public class TelaCliente extends javax.swing.JDialog {
         }
 
         jLabel22.setText("Complemento :");
+
+        jTComplemento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTComplementoKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -875,7 +935,7 @@ public class TelaCliente extends javax.swing.JDialog {
                     || "".equals(jTCnpj.getText().replaceAll("[.]", "").replaceAll("[/]", "").replaceAll("[-]", "").replaceAll(" ", ""))
                     || "".equals(jTIE.getText().replaceAll(" ", ""))
                     || "".equals(jTContato.getText().replaceAll("[\\(]", "").replaceAll("[\\)]", "").replaceAll("[-]", "").replaceAll(" ", "").replaceAll(" ", ""))) {
-                JOptionPane.showMessageDialog(this, "Campos obrigatórios vazios,\n favor verifique se há campos obrigatórios vazios", "ERRO", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Campos obrigatórios vazios,\n favor verifique se todos os campos marcados em azul estão preenchidos", "ERRO", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if (!Validacoes.isValidCNPJ(jTCnpj.getText().replaceAll("[.]", "").replaceAll("[/]", "").replaceAll("[-]", "").replaceAll(" ", ""))) {
@@ -973,7 +1033,7 @@ public class TelaCliente extends javax.swing.JDialog {
             new BuscaCliente(null, true, jTPesquisa.getText(), this).setVisible(true);
         } else {
             Controlador c = new Controlador();
-            ResultSet rs = c.pesquisaClienteNome("%" + jTPesquisa.getText() + "%");
+            ResultSet rs = c.pesquisaCliente("%" + jTPesquisa.getText() + "%",jTPesquisa.getText());
             try {
                 if (rs.last() && rs.getRow() == 1) {
                     rs.first();
@@ -1007,9 +1067,9 @@ public class TelaCliente extends javax.swing.JDialog {
                     } else {
                         cli.setAtivo(true);
                     }
-                    
+
                     this.dispose();
-                    
+
                     new TelaCliente(pai, true, cli).setVisible(true);
 
                 } else {
@@ -1028,6 +1088,76 @@ public class TelaCliente extends javax.swing.JDialog {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         this.limpatudo();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTNomeKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_HOME) {
+            String s = jTNome.getText();
+            jTNome.setText(s.toUpperCase());
+        }
+    }//GEN-LAST:event_jTNomeKeyReleased
+
+    private void jTNomeFantasiaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTNomeFantasiaKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_HOME) {
+            String s = jTNomeFantasia.getText();
+            jTNomeFantasia.setText(s.toUpperCase());
+        }
+    }//GEN-LAST:event_jTNomeFantasiaKeyReleased
+
+    private void jTNaturalidadeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTNaturalidadeKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_HOME) {
+            String s = jTNaturalidade.getText();
+            jTNaturalidade.setText(s.toUpperCase());
+        }
+    }//GEN-LAST:event_jTNaturalidadeKeyReleased
+
+    private void jTEnderecoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTEnderecoKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_HOME) {
+            String s = jTEndereco.getText();
+            jTEndereco.setText(s.toUpperCase());
+        }
+    }//GEN-LAST:event_jTEnderecoKeyReleased
+
+    private void jTComplementoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTComplementoKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_HOME) {
+            String s = jTComplemento.getText();
+            jTComplemento.setText(s.toUpperCase());
+        }
+    }//GEN-LAST:event_jTComplementoKeyReleased
+
+    private void jTBairroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTBairroKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_HOME) {
+            String s = jTBairro.getText();
+            jTBairro.setText(s.toUpperCase());
+        }
+    }//GEN-LAST:event_jTBairroKeyReleased
+
+    private void jTCidadeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTCidadeKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_HOME) {
+            String s = jTCidade.getText();
+            jTCidade.setText(s.toUpperCase());
+        }
+    }//GEN-LAST:event_jTCidadeKeyReleased
+
+    private void jTPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTPesquisaKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_HOME) {
+            String s = jTPesquisa.getText();
+            jTPesquisa.setText(s.toUpperCase());
+        }
+    }//GEN-LAST:event_jTPesquisaKeyReleased
+
+    private void jTRgKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTRgKeyTyped
+        String caracteres = "0987654321";
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTRgKeyTyped
+
+    private void jTIEKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTIEKeyTyped
+        String caracteres = "0987654321";
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTIEKeyTyped
 
     /**
      * @param args the command line arguments

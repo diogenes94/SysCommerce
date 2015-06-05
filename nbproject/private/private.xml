@@ -3,10 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/diogenes.francisco/Documents/NetBeansProjects/SysCommerce/src/br/com/ViewAux/BuscaCliente.java</file>
-            <file>file:/C:/Users/diogenes.francisco/Documents/NetBeansProjects/SysCommerce/src/br/com/dao/ClienteDao.java</file>
-            <file>file:/C:/Users/diogenes.francisco/Documents/NetBeansProjects/SysCommerce/src/br/com/view/TelaCliente.java</file>
-            <file>file:/C:/Users/diogenes.francisco/Documents/NetBeansProjects/SysCommerce/src/br/com/control/Controlador.java</file>
+            <file>file:/C:/Users/diogenes.francisco/Documents/GitHub/SysCommerce/src/br/com/view/TelaCliente.java</file>
+            <file>file:/C:/Users/diogenes.francisco/Documents/GitHub/SysCommerce/src/br/com/model/FornecedorModel.java</file>
+            <file>file:/C:/Users/diogenes.francisco/Documents/GitHub/SysCommerce/src/br/com/view/TelaFornecedor.java</file>
+            <file>file:/C:/Users/diogenes.francisco/Documents/GitHub/SysCommerce/src/br/com/dao/FornecedorDao.java</file>
+            <file>file:/C:/Users/diogenes.francisco/Documents/GitHub/SysCommerce/src/br/com/ViewAux/BuscaFornecedor.java</file>
+            <file>file:/C:/Users/diogenes.francisco/Documents/GitHub/SysCommerce/src/br/com/view/TelaCadastroProduto.java</file>
+            <file>file:/C:/Users/diogenes.francisco/Documents/GitHub/SysCommerce/src/br/com/control/Controlador.java</file>
         </group>
     </open-files>
 </project-private>

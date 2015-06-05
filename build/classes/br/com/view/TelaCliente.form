@@ -144,6 +144,9 @@
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JTextField" name="jTPesquisa">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTPesquisaKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jBBuscar">
           <Properties>
@@ -356,6 +359,9 @@
               <Color blue="ff" green="ff" red="cc" type="rgb"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTNomeKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
@@ -363,6 +369,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTRg">
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTRgKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
@@ -386,6 +395,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTNaturalidade">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTNaturalidadeKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">
           <Properties>
@@ -398,6 +410,9 @@
               <Color blue="ff" green="ff" red="cc" type="rgb"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTIEKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel10">
           <Properties>
@@ -405,6 +420,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTNomeFantasia">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTNomeFantasiaKeyReleased"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -562,6 +580,9 @@
         <Component class="javax.swing.JTextField" name="jTNumero">
         </Component>
         <Component class="javax.swing.JTextField" name="jTCidade">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTCidadeKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel16">
           <Properties>
@@ -574,6 +595,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTBairro">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTBairroKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel17">
           <Properties>
@@ -591,6 +615,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTEndereco">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTEnderecoKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="jComboEstado">
           <Properties>
@@ -645,6 +672,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTComplemento">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTComplementoKeyReleased"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

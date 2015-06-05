@@ -161,22 +161,6 @@ public class ClienteDao {
 
     }
 
-    public ResultSet pesquisaClienteNome(String nome) {
-        ResultSet rs = null;
-        PreparedStatement stmt;
-        String query = "select c.* , u.Nome as nomeuser, u.Login from cliente c inner join usuarios u on (c.Usuarios_id = u.id) where c.Nome like ? order by c.Nome";
-        try {
-            stmt = Conect.getConnection().prepareStatement(query);
-            stmt.setString(1, nome);
-            rs = stmt.executeQuery();
-        } catch (SQLException ex) {
-            Logger.getLogger(ClienteDao.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return rs;
-
-    }
-
     public ResultSet pesquisaClienteId(String codigo) {
         ResultSet rs = null;
         PreparedStatement stmt;
