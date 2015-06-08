@@ -5,8 +5,6 @@
  */
 package br.com.utils;
 
-import java.awt.Dialog;
-import javax.swing.JOptionPane;
 import org.joda.time.LocalDate;
 
 /**

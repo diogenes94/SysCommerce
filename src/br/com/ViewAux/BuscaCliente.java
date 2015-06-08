@@ -295,6 +295,7 @@ public class BuscaCliente extends javax.swing.JDialog {
                 }
 
                 pai.dispose();
+                this.setVisible(false);
                 TelaCliente tela = new TelaCliente(father, true, cli);
                 tela.setVisible(true);
                 this.dispose();
@@ -342,6 +343,7 @@ public class BuscaCliente extends javax.swing.JDialog {
                         cli.setAtivo(true);
                     }
                     pai.dispose();
+                    this.setVisible(false);
                     TelaCliente tela = new TelaCliente(father, true, cli);
                     tela.setVisible(true);
                     this.dispose();

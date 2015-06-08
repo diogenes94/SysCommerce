@@ -10,20 +10,20 @@ package br.com.model;
  * @author Diogenes
  */
 public class ProdutoModel {
-    String id,descricao,quantidade,gramatura,preco,dataCadastro,dataAlteracao,usuariosId,precoCusto;
-    Boolean ativo;
+    private String id,descricao,quantidade,gramatura,preco,dataCadastro,dataAlteracao,usuariosId,precoCusto,qntMinima,usuario,vlrTotal;
+    private Boolean ativo;
 
     public ProdutoModel() {
     }
 
-    public ProdutoModel(String id, String descricao, String preco, Boolean ativo) {
+    public ProdutoModel(String id, String descricao, String quantidade, Boolean ativo) {
         this.id = id;
         this.descricao = descricao;
-        this.preco = preco;
+        this.quantidade = quantidade;
         this.ativo = ativo;
     }
 
-    public ProdutoModel(String id, String descricao, String quantidade, String gramatura, String preco, String dataCadastro, String dataAlteracao, String usuariosId, String precoCusto, Boolean ativo) {
+    public ProdutoModel(String id, String descricao, String quantidade, String gramatura, String preco, String dataCadastro, String dataAlteracao, String usuariosId, String precoCusto, Boolean ativo,String qntMinima) {
         this.id = id;
         this.descricao = descricao;
         this.quantidade = quantidade;
@@ -34,6 +34,7 @@ public class ProdutoModel {
         this.usuariosId = usuariosId;
         this.precoCusto = precoCusto;
         this.ativo = ativo;
+        this.qntMinima = qntMinima;
     }
 
     public String getId() {
@@ -115,10 +116,30 @@ public class ProdutoModel {
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
-    
-    
 
-    
+    public String getQntMinima() {
+        return qntMinima;
+    }
+
+    public void setQntMinima(String qntMinima) {
+        this.qntMinima = qntMinima;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getVlrTotal() {
+        return vlrTotal;
+    }
+
+    public void setVlrTotal(String vlrTotal) {
+        this.vlrTotal = vlrTotal;
+    }
     
     
     

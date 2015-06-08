@@ -14,6 +14,7 @@ import br.com.utils.FormataData;
 import br.com.utils.InsereMascara;
 import br.com.view.TelaCliente;
 import br.com.view.TelaFornecedor;
+import br.com.view.TelaNotaEntrada;
 import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
@@ -167,18 +168,17 @@ public class BuscaFornecedor extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addGap(24, 24, 24))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2});
@@ -236,6 +236,7 @@ public class BuscaFornecedor extends javax.swing.JDialog {
                 }
 
                 pai.dispose();
+                this.setVisible(false);
                 TelaFornecedor tela = new TelaFornecedor(father, true, forn);
                 tela.setVisible(true);
                 this.dispose();
@@ -320,11 +321,19 @@ public class BuscaFornecedor extends javax.swing.JDialog {
                     } else {
                         forn.setAtivo(true);
                     }
-
                     pai.dispose();
-                    TelaFornecedor tela = new TelaFornecedor(father, true, forn);
-                    tela.setVisible(true);
+                    this.setVisible(false);
+                    if (pai.getTitle().equals("Lançamento de Notas Entrada")) {
+                        TelaNotaEntrada tela = new TelaNotaEntrada(father, true, forn);
+                        tela.setVisible(true);
+                    }
+
+                    if (pai.getTitle().equals("Cadastro de Fornecedores")) {
+                        TelaFornecedor tela = new TelaFornecedor(father, true, forn);
+                        tela.setVisible(true);
+                    }
                     this.dispose();
+
                 }
             } catch (Exception ex) {
                 Logger.getLogger(BuscaCliente.class.getName()).log(Level.SEVERE, null, ex);

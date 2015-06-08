@@ -699,7 +699,7 @@ public class TelaFornecedor extends javax.swing.JDialog {
         } else {
             try {
                 Controlador c = new Controlador();
-                ResultSet rs = c.pesquisaFornecedorId(jTCodigo.getText());
+                ResultSet rs = c.pesquisaFornecedor(jTPesquisa.getText(),"%"+jTPesquisa.getText()+"%");
                 if (rs.last() && rs.getRow() == 1) {
                     rs.first();
                     FornecedorModel forn = new FornecedorModel();

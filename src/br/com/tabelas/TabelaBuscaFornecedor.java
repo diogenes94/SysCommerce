@@ -5,7 +5,6 @@
  */
 package br.com.tabelas;
 
-import br.com.model.ClienteModel;
 import br.com.model.FornecedorModel;
 import java.util.LinkedList;
 import java.util.List;

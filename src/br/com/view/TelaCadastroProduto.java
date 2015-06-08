@@ -5,7 +5,17 @@
  */
 package br.com.view;
 
+import br.com.ViewAux.BuscaFornecedor;
+import br.com.ViewAux.BuscaProduto;
 import br.com.control.Controlador;
+import br.com.model.FornecedorModel;
+import br.com.model.ProdutoModel;
+import br.com.utils.FormataData;
+import java.awt.event.KeyEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.joda.time.LocalDate;
 
@@ -18,11 +28,29 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
     /**
      * Creates new form TelaCadastroProduto
      */
+    TelaPrincipal father;
+
     public TelaCadastroProduto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(this);
-        
+
+    }
+
+    public TelaCadastroProduto(java.awt.Frame parent, boolean modal, ProdutoModel prod) {
+        super(parent, modal);
+        initComponents();
+        setLocationRelativeTo(this);
+        jTCodigo.setText(prod.getId());
+        jTDescricao.setText(prod.getDescricao());
+        jCombGramatura.setSelectedItem(prod.getGramatura());
+        jTQuant.setText(prod.getQuantidade().replaceAll("[.]", ","));
+        jTPreco.setText(prod.getPreco().replaceAll("[.]", ","));
+        jTPrecoCusto.setText(prod.getPrecoCusto());
+        jTQuantMinima.setText(prod.getQntMinima().replaceAll("[.]", ","));
+        jTDataAlter.setText(FormataData.dateForApp(prod.getDataAlteracao()));
+        jTUsuario.setText(prod.getUsuario());
+        jCheckSituacao.setSelected(prod.getAtivo());
     }
 
     /**
@@ -55,6 +83,8 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
         jLabel7 = new javax.swing.JLabel();
         jTDataAlter = new javax.swing.JFormattedTextField();
         jTUsuario = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jTQuantMinima = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
         jBtnSalvar = new javax.swing.JButton();
@@ -64,10 +94,16 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Produtos");
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Pesquisar"));
 
         jBBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/magnifying47.png"))); // NOI18N
+        jBBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBBuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -117,6 +153,11 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
         jLabel4.setText("Gramatura :");
 
         jTDescricao.setBackground(new java.awt.Color(204, 255, 255));
+        jTDescricao.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTDescricaoKeyReleased(evt);
+            }
+        });
 
         jLabel3.setText("Quantidade em estoque :");
 
@@ -135,6 +176,11 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
 
         jTPreco.setBackground(new java.awt.Color(204, 255, 255));
         jTPreco.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,###.00"))));
+        jTPreco.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTPrecoKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -161,7 +207,7 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTPrecoCusto, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,6 +247,15 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
 
         jTUsuario.setEnabled(false);
 
+        jLabel1.setText("Quantidade Mínima :");
+
+        jTQuantMinima.setBackground(new java.awt.Color(204, 255, 255));
+        jTQuantMinima.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTQuantMinimaKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -214,6 +269,10 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTDataAlter, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
                     .addComponent(jTUsuario))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTQuantMinima, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -222,7 +281,10 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTDataAlter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTDataAlter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(jTQuantMinima, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -234,6 +296,11 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/back57.png"))); // NOI18N
         jButton4.setText("Cancelar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jBtnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/save31.png"))); // NOI18N
         jBtnSalvar.setText("Salvar");
@@ -304,6 +371,7 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -312,12 +380,10 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addComponent(jPanel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -325,23 +391,22 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    public void limpa(){
+    public void limpa() {
         jTDescricao.setText(null);
         jTQuant.setText(null);
         jTPreco.setText(null);
@@ -350,39 +415,110 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
         jTUsuario.setText(null);
         jCheckSituacao.setSelected(true);
         jCombGramatura.setSelectedIndex(0);
+        jTQuantMinima.setText(null);
     }
     private void jBtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarActionPerformed
         String ativo = "1";
-        if("".equals(jTDescricao.getText())){
-            JOptionPane.showMessageDialog(this, "Campo Descrição vazio, favor preencha o campo para continuar!","ERRO",JOptionPane.ERROR_MESSAGE);
+        if ("".equals(jTDescricao.getText())) {
+            JOptionPane.showMessageDialog(this, "Campo Descrição vazio, favor preencha o campo para continuar!", "ERRO", JOptionPane.ERROR_MESSAGE);
             jTDescricao.requestFocus();
             return;
         }
-        if("".equals(jTPreco.getText())){
-            JOptionPane.showMessageDialog(this, "Campo Preço vazio, favor preencha o campo para continuar!","ERRO",JOptionPane.ERROR_MESSAGE);
+        if ("".equals(jTPreco.getText())) {
+            JOptionPane.showMessageDialog(this, "Campo Preço vazio, favor preencha o campo para continuar!", "ERRO", JOptionPane.ERROR_MESSAGE);
             jTPreco.requestFocus();
             return;
         }
-        
-        if(!jCheckSituacao.isSelected()){
-            ativo="0";
+        if ("".equals(jTQuantMinima.getText())) {
+            JOptionPane.showMessageDialog(this, "Campo Quantidade mínima vazio, favor preencha o campo para continuar!", "ERRO", JOptionPane.ERROR_MESSAGE);
+            jTQuantMinima.requestFocus();
+            return;
+        }
+
+        if (!jCheckSituacao.isSelected()) {
+            ativo = "0";
         }
         LocalDate date = new LocalDate();
         Controlador c = new Controlador();
-        if(jTCodigo.getText().equals("")){
-            c.inserirProduto(jTDescricao.getText(),"0", jCombGramatura.getSelectedItem().toString(),
+        if (jTCodigo.getText().equals("")) {
+            c.inserirProduto(jTDescricao.getText(), "0", jCombGramatura.getSelectedItem().toString(),
                     jTPreco.getText().replaceAll("[.]", "").replaceAll("[,]", "."), ativo, date.toString(), date.toString(),
-                    TelaPrincipal.getIdUsr(),null);
+                    TelaPrincipal.getIdUsr(), null, jTQuantMinima.getText().replaceAll("[,]", "."));
             JOptionPane.showMessageDialog(this, "Produto inserido com sucesso!");
+            this.limpa();
             //System.out.println(jTPreco.getText().replaceAll("[.]", "").replaceAll("[,]", "."));
-        }else{
-            
+        } else {
+            c.atualizaProduto(jTDescricao.getText(), "0", jCombGramatura.getSelectedItem().toString(),
+                    jTPreco.getText().replaceAll("[.]", "").replaceAll("[,]", "."), ativo, date.toString(),
+                    TelaPrincipal.getIdUsr(), null, jTQuantMinima.getText().replaceAll("[,]", "."), jTCodigo.getText());
+            JOptionPane.showMessageDialog(this, "Produto atualizado com sucesso!");
+            this.limpa();
         }
     }//GEN-LAST:event_jBtnSalvarActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscarActionPerformed
+        if (jTPesquisa.getText().equals("")) {
+            new BuscaProduto(null, true, jTPesquisa.getText(), this).setVisible(true);
+        } else {
+            try {
+                Controlador c = new Controlador();
+                ResultSet rs = c.pesquisaProduto(jTPesquisa.getText(), "%" + jTPesquisa.getText() + "%");
+                if (rs.last() && rs.getRow() == 1) {
+                    rs.first();
+                    ProdutoModel prod = new ProdutoModel();
+                    prod.setId(rs.getString("id"));
+                    prod.setDescricao(rs.getString("descricao"));
+                    prod.setGramatura(rs.getString("gramatura"));
+                    prod.setQuantidade(rs.getString("quantidade"));
+                    prod.setPreco(rs.getString("preco"));
+                    prod.setPrecoCusto(rs.getString("preco_custo"));
+                    prod.setQntMinima(rs.getString("qntMinima"));
+                    prod.setDataAlteracao(rs.getString("data_alteracao"));
+                    prod.setUsuario(rs.getString("login"));
+                    prod.setAtivo(rs.getBoolean("ativo"));
+
+                    this.dispose();
+                    TelaCadastroProduto tela = new TelaCadastroProduto(father, true, prod);
+                    tela.setVisible(true);
+
+                } else {
+                    new BuscaProduto(null, true, jTPesquisa.getText(), this).setVisible(true);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(TelaFornecedor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_jBBuscarActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        this.limpa();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTDescricaoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTDescricaoKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_HOME) {
+            String s = jTDescricao.getText();
+            jTDescricao.setText(s.toUpperCase());
+        }
+    }//GEN-LAST:event_jTDescricaoKeyReleased
+
+    private void jTPrecoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTPrecoKeyTyped
+        String caracteres = "0987654321,";
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTPrecoKeyTyped
+
+    private void jTQuantMinimaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTQuantMinimaKeyTyped
+        String caracteres = "0987654321,";
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTQuantMinimaKeyTyped
 
     /**
      * @param args the command line arguments
@@ -433,6 +569,7 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
     private javax.swing.JButton jButton4;
     private javax.swing.JCheckBox jCheckSituacao;
     private javax.swing.JComboBox jCombGramatura;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -453,6 +590,7 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
     private javax.swing.JFormattedTextField jTPreco;
     private javax.swing.JTextField jTPrecoCusto;
     private javax.swing.JTextField jTQuant;
+    private javax.swing.JTextField jTQuantMinima;
     private javax.swing.JTextField jTUsuario;
     // End of variables declaration//GEN-END:variables
 }

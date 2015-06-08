@@ -88,9 +88,28 @@ public class Controlador {
                 telefone, fax, im, cep, dataAlteracao, usuariosId, Email, ativo, complemento, id);
     }
     
-    public void inserirProduto(String descricao,String quantidade,String gramatura,String preco,String ativo,
-            String dataCadastro,String dataAlteracao,String usuariosId,String precoCusto){
+    //PRODUTO
+    public Boolean inserirProduto(String descricao,String quantidade,String gramatura,String preco,String ativo,
+            String dataCadastro,String dataAlteracao,String usuariosId,String precoCusto,String qntMinima){
         prod = new ProdutoDao();
-        prod.inserirProduto(descricao, quantidade, gramatura, preco, ativo, dataCadastro, dataAlteracao, usuariosId, precoCusto);
+        return prod.inserirProduto(descricao, quantidade, gramatura, preco, ativo, dataCadastro, dataAlteracao, usuariosId, precoCusto,qntMinima);
+    }
+    
+    public ResultSet pesquisaProduto(String id,String descricao){
+        prod = new ProdutoDao();
+        ResultSet rs = prod.pesquisaProduto(id, descricao);
+        return rs;
+    }
+    
+    public ResultSet pesquisaProdutoId(String id){
+        prod = new ProdutoDao();
+        ResultSet rs = prod.pesquisaProdutoId(id);
+        return rs;
+    }
+    
+    public void atualizaProduto(String descricao,String quantidade,String gramatura,String preco,String ativo,
+            String dataAlteracao,String usuariosId,String precoCusto,String qntMinima,String id){
+        prod = new ProdutoDao();
+        prod.atualizaProduto(descricao, quantidade, gramatura, preco, ativo, dataAlteracao, usuariosId, precoCusto, qntMinima, id);
     }
 }
