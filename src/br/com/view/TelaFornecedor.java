@@ -11,6 +11,7 @@ import br.com.model.FornecedorModel;
 import br.com.utils.FormataData;
 import br.com.utils.Validacoes;
 import java.awt.Frame;
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -28,6 +29,7 @@ public class TelaFornecedor extends javax.swing.JDialog {
      * Creates new form TelaFornecedor
      */
     Frame father;
+
     public TelaFornecedor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -126,6 +128,12 @@ public class TelaFornecedor extends javax.swing.JDialog {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Pesquisar"));
 
+        jTPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTPesquisaKeyReleased(evt);
+            }
+        });
+
         jBBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/magnifying47.png"))); // NOI18N
         jBBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,9 +207,21 @@ public class TelaFornecedor extends javax.swing.JDialog {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Dados Cadastrais"));
 
+        jTIm.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTImKeyTyped(evt);
+            }
+        });
+
         jLabel3.setText("Nome Fantasia :");
 
         jLabel2.setText("Razão Social :");
+
+        jTNomeFantasia.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTNomeFantasiaKeyReleased(evt);
+            }
+        });
 
         jLabel5.setText("Incrição Estadual :");
 
@@ -217,8 +237,18 @@ public class TelaFornecedor extends javax.swing.JDialog {
         }
 
         jTIe.setBackground(new java.awt.Color(204, 255, 255));
+        jTIe.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTIeKeyTyped(evt);
+            }
+        });
 
         jTRazaoSocial.setBackground(new java.awt.Color(204, 255, 255));
+        jTRazaoSocial.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTRazaoSocialKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -274,12 +304,22 @@ public class TelaFornecedor extends javax.swing.JDialog {
         jTNumero.setBackground(new java.awt.Color(204, 255, 255));
 
         jTCidade.setBackground(new java.awt.Color(204, 255, 255));
+        jTCidade.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTCidadeKeyReleased(evt);
+            }
+        });
 
         jLabel16.setText("Endereço :");
 
         jLabel18.setText("Estado :");
 
         jTBairro.setBackground(new java.awt.Color(204, 255, 255));
+        jTBairro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTBairroKeyReleased(evt);
+            }
+        });
 
         jLabel17.setText("Cidade :");
 
@@ -288,6 +328,11 @@ public class TelaFornecedor extends javax.swing.JDialog {
         jLabel19.setText("Numero :");
 
         jTEndereco.setBackground(new java.awt.Color(204, 255, 255));
+        jTEndereco.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTEnderecoKeyReleased(evt);
+            }
+        });
 
         jLabel7.setText("CEP :");
 
@@ -342,12 +387,13 @@ public class TelaFornecedor extends javax.swing.JDialog {
                     .addComponent(jLabel16)
                     .addComponent(jTEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel19)
-                    .addComponent(jTNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(jTComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jTComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel19)
+                        .addComponent(jTNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel20)
@@ -632,13 +678,13 @@ public class TelaFornecedor extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "Falha ao cadastrar fornecedor!", "ERRO", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            try{
+            try {
                 c.atualizaFornecedor(jTRazaoSocial.getText(), jTNomeFantasia.getText(), jTCnpj.getText().replaceAll("[.]", "").replaceAll("[/]", "").replaceAll("[-]", "").replaceAll(" ", ""),
                         jTIe.getText(), jTEndereco.getText(), jTNumero.getText(), jTBairro.getText(), jTCidade.getText(), jComboEstado.getSelectedItem().toString(),
                         jTContato.getText().replaceAll("[\\(]", "").replaceAll("[\\)]", "").replaceAll("[-]", "").replaceAll(" ", "").replaceAll(" ", ""),
                         jTFax.getText().replaceAll("[\\(]", "").replaceAll("[\\)]", "").replaceAll("[-]", "").replaceAll(" ", "").replaceAll(" ", ""),
-                        jTIm.getText(), jTCep.getText().replaceAll("[-]", "").replaceAll(" ", ""),date.toString(), TelaPrincipal.getIdUsr(),
-                        ativo, jTEmail.getText(), jTComplemento.getText(),jTCodigo.getText());
+                        jTIm.getText(), jTCep.getText().replaceAll("[-]", "").replaceAll(" ", ""), date.toString(), TelaPrincipal.getIdUsr(),
+                        ativo, jTEmail.getText(), jTComplemento.getText(), jTCodigo.getText());
                 JOptionPane.showMessageDialog(this, "Fornecedor atualizado com sucesso!");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Falha ao atualizar fornecedor!", "ERRO", JOptionPane.ERROR_MESSAGE);
@@ -648,9 +694,9 @@ public class TelaFornecedor extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscarActionPerformed
-        if(jTPesquisa.getText().equals("")){
+        if (jTPesquisa.getText().equals("")) {
             new BuscaFornecedor(null, true, jTPesquisa.getText(), this).setVisible(true);
-        }else{
+        } else {
             try {
                 Controlador c = new Controlador();
                 ResultSet rs = c.pesquisaFornecedorId(jTCodigo.getText());
@@ -684,21 +730,77 @@ public class TelaFornecedor extends javax.swing.JDialog {
                     this.dispose();
                     TelaFornecedor tela = new TelaFornecedor(father, true, forn);
                     tela.setVisible(true);
-                    
-                }else{
+
+                } else {
                     new BuscaFornecedor(null, true, jTPesquisa.getText(), this).setVisible(true);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(TelaFornecedor.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
-        
+
     }//GEN-LAST:event_jBBuscarActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         this.limpa();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTRazaoSocialKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTRazaoSocialKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_HOME) {
+            String s = jTRazaoSocial.getText();
+            jTRazaoSocial.setText(s.toUpperCase());
+        }
+    }//GEN-LAST:event_jTRazaoSocialKeyReleased
+
+    private void jTNomeFantasiaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTNomeFantasiaKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_HOME) {
+            String s = jTNomeFantasia.getText();
+            jTNomeFantasia.setText(s.toUpperCase());
+        }
+    }//GEN-LAST:event_jTNomeFantasiaKeyReleased
+
+    private void jTEnderecoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTEnderecoKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_HOME) {
+            String s = jTEndereco.getText();
+            jTEndereco.setText(s.toUpperCase());
+        }
+    }//GEN-LAST:event_jTEnderecoKeyReleased
+
+    private void jTBairroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTBairroKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_HOME) {
+            String s = jTBairro.getText();
+            jTBairro.setText(s.toUpperCase());
+        }
+    }//GEN-LAST:event_jTBairroKeyReleased
+
+    private void jTCidadeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTCidadeKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_HOME) {
+            String s = jTCidade.getText();
+            jTCidade.setText(s.toUpperCase());
+        }
+    }//GEN-LAST:event_jTCidadeKeyReleased
+
+    private void jTPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTPesquisaKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_HOME) {
+            String s = jTPesquisa.getText();
+            jTPesquisa.setText(s.toUpperCase());
+        }
+    }//GEN-LAST:event_jTPesquisaKeyReleased
+
+    private void jTIeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTIeKeyTyped
+        String caracteres = "0987654321";
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTIeKeyTyped
+
+    private void jTImKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTImKeyTyped
+        String caracteres = "0987654321";
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTImKeyTyped
 
     /**
      * @param args the command line arguments

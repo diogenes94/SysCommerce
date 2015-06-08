@@ -5,6 +5,10 @@
  */
 package br.com.view;
 
+import br.com.control.Controlador;
+import javax.swing.JOptionPane;
+import org.joda.time.LocalDate;
+
 /**
  *
  * @author Diogenes
@@ -33,21 +37,19 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jTPesquisa = new javax.swing.JTextField();
         jBBuscar = new javax.swing.JButton();
-        jCombFiltro = new javax.swing.JComboBox();
-        jLabel1 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jTCodigo = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jTPrecoCusto = new javax.swing.JTextField();
         jTDescricao = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jCombGramatura = new javax.swing.JComboBox();
         jTQuant = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTPreco = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jTPrecoCusto = new javax.swing.JTextField();
+        jTPreco = new javax.swing.JFormattedTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -67,22 +69,14 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
 
         jBBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/magnifying47.png"))); // NOI18N
 
-        jCombFiltro.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tudo", "Descricao", "Código" }));
-
-        jLabel1.setText("Filtrar por:");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(6, 6, 6)
                 .addComponent(jTPesquisa)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCombFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jBBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -92,11 +86,8 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jBBuscar)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jCombFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1)))
-                .addContainerGap())
+                    .addComponent(jBBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16))
         );
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Código"));
@@ -125,8 +116,11 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
 
         jLabel4.setText("Gramatura :");
 
+        jTDescricao.setBackground(new java.awt.Color(204, 255, 255));
+
         jLabel3.setText("Quantidade em estoque :");
 
+        jCombGramatura.setBackground(new java.awt.Color(204, 255, 255));
         jCombGramatura.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "UN", "KG", "MT" }));
 
         jTQuant.setEnabled(false);
@@ -136,6 +130,11 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
         jLabel8.setText("Preço de custo :");
 
         jLabel5.setText("Preço :");
+
+        jTPrecoCusto.setEnabled(false);
+
+        jTPreco.setBackground(new java.awt.Color(204, 255, 255));
+        jTPreco.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,###.00"))));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -156,12 +155,12 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTQuant))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jTPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jTPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTPrecoCusto)))
+                        .addComponent(jTPrecoCusto, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -180,9 +179,9 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(jTPrecoCusto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTPrecoCusto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -342,9 +341,43 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    public void limpa(){
+        jTDescricao.setText(null);
+        jTQuant.setText(null);
+        jTPreco.setText(null);
+        jTPrecoCusto.setText(null);
+        jTDataAlter.setText(null);
+        jTUsuario.setText(null);
+        jCheckSituacao.setSelected(true);
+        jCombGramatura.setSelectedIndex(0);
+    }
     private void jBtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalvarActionPerformed
-        //Testa código para saber se esta atualizando ou inserindo novo!
+        String ativo = "1";
+        if("".equals(jTDescricao.getText())){
+            JOptionPane.showMessageDialog(this, "Campo Descrição vazio, favor preencha o campo para continuar!","ERRO",JOptionPane.ERROR_MESSAGE);
+            jTDescricao.requestFocus();
+            return;
+        }
+        if("".equals(jTPreco.getText())){
+            JOptionPane.showMessageDialog(this, "Campo Preço vazio, favor preencha o campo para continuar!","ERRO",JOptionPane.ERROR_MESSAGE);
+            jTPreco.requestFocus();
+            return;
+        }
+        
+        if(!jCheckSituacao.isSelected()){
+            ativo="0";
+        }
+        LocalDate date = new LocalDate();
+        Controlador c = new Controlador();
+        if(jTCodigo.getText().equals("")){
+            c.inserirProduto(jTDescricao.getText(),"0", jCombGramatura.getSelectedItem().toString(),
+                    jTPreco.getText().replaceAll("[.]", "").replaceAll("[,]", "."), ativo, date.toString(), date.toString(),
+                    TelaPrincipal.getIdUsr(),null);
+            JOptionPane.showMessageDialog(this, "Produto inserido com sucesso!");
+            //System.out.println(jTPreco.getText().replaceAll("[.]", "").replaceAll("[,]", "."));
+        }else{
+            
+        }
     }//GEN-LAST:event_jBtnSalvarActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -399,9 +432,7 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JCheckBox jCheckSituacao;
-    private javax.swing.JComboBox jCombFiltro;
     private javax.swing.JComboBox jCombGramatura;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -419,7 +450,7 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
     private javax.swing.JFormattedTextField jTDataAlter;
     private javax.swing.JTextField jTDescricao;
     private javax.swing.JTextField jTPesquisa;
-    private javax.swing.JTextField jTPreco;
+    private javax.swing.JFormattedTextField jTPreco;
     private javax.swing.JTextField jTPrecoCusto;
     private javax.swing.JTextField jTQuant;
     private javax.swing.JTextField jTUsuario;

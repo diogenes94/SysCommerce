@@ -16,6 +16,7 @@ import br.com.view.TelaCliente;
 import br.com.view.TelaFornecedor;
 import java.awt.Dialog;
 import java.awt.Frame;
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -249,6 +250,10 @@ public class BuscaFornecedor extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTPesquisaKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_HOME) {
+            String s = jTPesquisa.getText();
+            jTPesquisa.setText(s.toUpperCase());
+        }
         TabelaBuscaFornecedor model = (TabelaBuscaFornecedor) jTable1.getModel();
         model.limpaTabela();
         try {

@@ -1,0 +1,2 @@
+Limitar carácteres em todos campos
+relatório de itens com estoque baixo

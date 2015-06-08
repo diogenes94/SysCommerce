@@ -21,7 +21,7 @@ public class Conect {
         java.sql.Connection con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/SysCommerce","root","");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/SysCommerce","root","12345");
         }   catch (ClassNotFoundException ex) {  
             JOptionPane.showMessageDialog(null, "Erro Classe");
             

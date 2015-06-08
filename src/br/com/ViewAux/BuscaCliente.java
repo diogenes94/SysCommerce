@@ -13,6 +13,7 @@ import br.com.utils.InsereMascara;
 import br.com.view.TelaCliente;
 import br.com.view.TelaPrincipal;
 import java.awt.Dialog;
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -352,6 +353,10 @@ public class BuscaCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jTPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTPesquisaKeyReleased
+        if (evt.getKeyCode() != KeyEvent.VK_HOME) {
+            String s = jTPesquisa.getText();
+            jTPesquisa.setText(s.toUpperCase());
+        }
         Controlador c = new Controlador();
         TabelaBuscaCliente model = (TabelaBuscaCliente) jTable1.getModel();
         model.limpaTabela();
