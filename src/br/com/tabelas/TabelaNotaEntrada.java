@@ -94,17 +94,17 @@ public class TabelaNotaEntrada extends AbstractTableModel {
         if (valor == null) {
             return;
         }
-        switch(coluna){
+        switch (coluna) {
             case 0:
                 listaRegistro.get(linha).setId((String) valor);
-                valor=null;
+                valor = null;
             case 2:
                 listaRegistro.get(linha).setQuantidade((String) valor);
             case 3:
                 listaRegistro.get(linha).setPreco((String) valor);
             case 4:
                 listaRegistro.get(linha).setVlrTotal((String) valor);
-         }
+        }
         fireTableCellUpdated(linha, coluna);
     }
 
@@ -149,26 +149,33 @@ public class TabelaNotaEntrada extends AbstractTableModel {
             } catch (SQLException ex) {
                 Logger.getLogger(TabelaNotaEntrada.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else if (column == 3){
+        } else if (column == 3) {
             Double quant = Double.parseDouble(listaRegistro.get(row).getQuantidade().replaceAll("[,]", "."));
             Double preco = Double.parseDouble(listaRegistro.get(row).getPreco().replaceAll("[,]", "."));
-            Double total = preco*quant;
+            Double total = preco * quant;
             listaRegistro.get(row).setQuantidade(FormataDinheiro.moneyForApp(quant));
             listaRegistro.get(row).setVlrTotal(FormataDinheiro.moneyForApp(total));
             listaRegistro.get(row).setPrecoCusto(FormataDinheiro.moneyForApp(preco));
         }
-        
-        
+
         super.fireTableCellUpdated(row, column); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        if (columnIndex == 0 || columnIndex == 2 || columnIndex == 3 || columnIndex == 4) {
-            return true;
-        }
+        if (columnIndex == 1) {
+            return false;
+        } else if (listaRegistro.get(rowIndex).getDescricao() == null) {
+            if (columnIndex > 1) {
+                return false;
+            }
+        } 
 
-        return false;
+        /*
+         if (columnIndex == 0 || columnIndex == 2 || columnIndex == 3 || columnIndex == 4) {
+         return true;
+         }*/
+        return true;
     }
 
     public void limpaTabela() {
