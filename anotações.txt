@@ -1,2 +1,3 @@
 Limitar carácteres em todos campos
 relatório de itens com estoque baixo
+Limitar caracteres dentro dos campos da tabela
