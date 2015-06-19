@@ -63,7 +63,7 @@ public class ProdutoDao {
     public ResultSet pesquisaProdutoId(String id){
         PreparedStatement stmt;
         ResultSet rs = null;
-        String query = "select p.* , u.* from produto p inner join usuarios u on (p.usuarios_id = u.id) where p.id = ? ";
+        String query = "select p.* , u.* from produto p inner join usuarios u on (p.usuarios_id = u.id) where p.id = ?";
         try {
             stmt = Conect.getConnection().prepareStatement(query);
             stmt.setString(1, id);

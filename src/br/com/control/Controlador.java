@@ -7,6 +7,7 @@ package br.com.control;
 
 import br.com.dao.ClienteDao;
 import br.com.dao.FornecedorDao;
+import br.com.dao.NotaEntradaDao;
 import br.com.dao.ProdutoDao;
 import java.sql.ResultSet;
 
@@ -19,9 +20,9 @@ public class Controlador {
     ClienteDao cli;
     FornecedorDao forn;
     ProdutoDao prod;
+    NotaEntradaDao nfIn;
 
     // CLIENTE
-
     public void inserirCliente(String nome, String cpf, String rg, String dataNasc, String sexo,
             String contato, String contato2, String observacao, String dataCadastro, String ativo, String naturalidade,
             String email, String usuariosId, String dataAlteracao, String cnpj, String tipoCliente, String endereco,
@@ -87,29 +88,36 @@ public class Controlador {
         forn.atualizaFornecedor(razaoSocial, nomeFantasia, cnpj, ie, endereco, numero, bairro, cidade, estado,
                 telefone, fax, im, cep, dataAlteracao, usuariosId, Email, ativo, complemento, id);
     }
-    
+
     //PRODUTO
-    public Boolean inserirProduto(String descricao,String quantidade,String gramatura,String preco,String ativo,
-            String dataCadastro,String dataAlteracao,String usuariosId,String precoCusto,String qntMinima){
+    public Boolean inserirProduto(String descricao, String quantidade, String gramatura, String preco, String ativo,
+            String dataCadastro, String dataAlteracao, String usuariosId, String precoCusto, String qntMinima) {
         prod = new ProdutoDao();
-        return prod.inserirProduto(descricao, quantidade, gramatura, preco, ativo, dataCadastro, dataAlteracao, usuariosId, precoCusto,qntMinima);
+        return prod.inserirProduto(descricao, quantidade, gramatura, preco, ativo, dataCadastro, dataAlteracao, usuariosId, precoCusto, qntMinima);
     }
-    
-    public ResultSet pesquisaProduto(String id,String descricao){
+
+    public ResultSet pesquisaProduto(String id, String descricao) {
         prod = new ProdutoDao();
         ResultSet rs = prod.pesquisaProduto(id, descricao);
         return rs;
     }
-    
-    public ResultSet pesquisaProdutoId(String id){
+
+    public ResultSet pesquisaProdutoId(String id) {
         prod = new ProdutoDao();
         ResultSet rs = prod.pesquisaProdutoId(id);
         return rs;
     }
-    
-    public void atualizaProduto(String descricao,String quantidade,String gramatura,String preco,String ativo,
-            String dataAlteracao,String usuariosId,String precoCusto,String qntMinima,String id){
+
+    public void atualizaProduto(String descricao, String quantidade, String gramatura, String preco, String ativo,
+            String dataAlteracao, String usuariosId, String precoCusto, String qntMinima, String id) {
         prod = new ProdutoDao();
         prod.atualizaProduto(descricao, quantidade, gramatura, preco, ativo, dataAlteracao, usuariosId, precoCusto, qntMinima, id);
+    }
+
+    //Nota entrada
+    public ResultSet validaNfExiste(String idFor, String numNota) {
+        nfIn = new NotaEntradaDao();
+        ResultSet rs = nfIn.validaNfExiste(idFor, numNota);
+        return rs;
     }
 }

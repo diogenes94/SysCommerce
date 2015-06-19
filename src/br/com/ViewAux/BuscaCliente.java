@@ -8,7 +8,6 @@ package br.com.ViewAux;
 import br.com.control.Controlador;
 import br.com.model.ClienteModel;
 import br.com.tabelas.TabelaBuscaCliente;
-import br.com.utils.FormataData;
 import br.com.utils.InsereMascara;
 import br.com.view.TelaCliente;
 import br.com.view.TelaPrincipal;

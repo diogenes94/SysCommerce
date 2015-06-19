@@ -35,4 +35,12 @@ public class FormataDinheiro {
         }
         return formatado+","+decimal;
     }
+    
+    public static Double moneyForCalc(String valor){
+        Double newValor = Double.parseDouble(valor.replaceAll("[.]", "").replaceAll("[,]", "."));
+        //System.out.println(newValor);
+        return newValor;
+    }
+    
 }
+

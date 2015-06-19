@@ -10,10 +10,12 @@ import br.com.model.FornecedorModel;
 import br.com.model.ProdutoModel;
 import br.com.tabelas.TabelaBuscaFornecedor;
 import br.com.tabelas.TabelaBuscaProduto;
+import br.com.tabelas.TabelaNotaEntrada;
 import br.com.utils.FormataData;
 import br.com.utils.InsereMascara;
 import br.com.view.TelaCadastroProduto;
 import br.com.view.TelaFornecedor;
+import br.com.view.TelaNotaEntrada;
 import br.com.view.TelaPrincipal;
 import java.awt.Dialog;
 import java.awt.Frame;
@@ -36,7 +38,7 @@ public class BuscaProduto extends javax.swing.JDialog {
      */
     Dialog pai;
     TelaPrincipal father;
-    
+
     public BuscaProduto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -44,7 +46,7 @@ public class BuscaProduto extends javax.swing.JDialog {
         jTable1.setShowHorizontalLines(true);
         jTable1.setShowVerticalLines(true);
     }
-    
+
     public BuscaProduto(java.awt.Frame parent, boolean modal, String busca, Dialog pai) {
         super(parent, modal);
         initComponents();
@@ -54,7 +56,7 @@ public class BuscaProduto extends javax.swing.JDialog {
         jTPesquisa.setText(busca);
         this.pai = pai;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -202,31 +204,31 @@ public class BuscaProduto extends javax.swing.JDialog {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         if (evt.getClickCount() == 2) {
             Controlador c = new Controlador();
-        String codigo = (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0);
-        ResultSet rs = c.pesquisaProdutoId(codigo);
-        try {
-            if (rs.next()) {
-                ProdutoModel prod = new ProdutoModel();
-                prod.setId(rs.getString("id"));
-                prod.setDescricao(rs.getString("descricao"));
-                prod.setGramatura(rs.getString("gramatura"));
-                prod.setQuantidade(rs.getString("quantidade"));
-                prod.setPreco(rs.getString("preco"));
-                prod.setPrecoCusto(rs.getString("preco_custo"));
-                prod.setQntMinima(rs.getString("qntMinima"));
-                prod.setDataAlteracao(rs.getString("data_alteracao"));
-                prod.setUsuario(rs.getString("login"));
-                prod.setAtivo(rs.getBoolean("ativo"));
+            String codigo = (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0);
+            ResultSet rs = c.pesquisaProdutoId(codigo);
+            try {
+                if (rs.next()) {
+                    ProdutoModel prod = new ProdutoModel();
+                    prod.setId(rs.getString("id"));
+                    prod.setDescricao(rs.getString("descricao"));
+                    prod.setGramatura(rs.getString("gramatura"));
+                    prod.setQuantidade(rs.getString("quantidade"));
+                    prod.setPreco(rs.getString("preco"));
+                    prod.setPrecoCusto(rs.getString("preco_custo"));
+                    prod.setQntMinima(rs.getString("qntMinima"));
+                    prod.setDataAlteracao(rs.getString("data_alteracao"));
+                    prod.setUsuario(rs.getString("login"));
+                    prod.setAtivo(rs.getBoolean("ativo"));
 
-                pai.dispose();
-                this.setVisible(false);
-                TelaCadastroProduto tela = new TelaCadastroProduto(father, true, prod);
-                tela.setVisible(true);
-                this.dispose();
+                    pai.dispose();
+                    this.setVisible(false);
+                    TelaCadastroProduto tela = new TelaCadastroProduto(father, true, prod);
+                    tela.setVisible(true);
+                    this.dispose();
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(BuscaCliente.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (Exception ex) {
-            Logger.getLogger(BuscaCliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -252,11 +254,29 @@ public class BuscaProduto extends javax.swing.JDialog {
                 prod.setUsuario(rs.getString("login"));
                 prod.setAtivo(rs.getBoolean("ativo"));
 
-                pai.dispose();
-                this.setVisible(false);
-                TelaCadastroProduto tela = new TelaCadastroProduto(father, true, prod);
-                tela.setVisible(true);
-                this.dispose();
+                
+                
+                if (pai.getTitle().equals("Cadastro de Produtos")) {
+                    this.setVisible(false);
+                    pai.dispose();
+                    TelaCadastroProduto tela = new TelaCadastroProduto(father, true, prod);
+                    tela.setVisible(true);
+                    this.dispose();
+                }
+                if (pai.getTitle().equals("Lançamento de Notas Entrada")) {
+                    prod.setQuantidade(null);
+                    prod.setPreco(null);
+                    if(!prod.getAtivo()){
+                        JOptionPane.showMessageDialog(this, "Produto inativo, indisponível para venda!","ERRO",JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    this.setVisible(false);
+                    TabelaNotaEntrada model = (TabelaNotaEntrada) TelaNotaEntrada.getjTable1().getModel();
+                    model.removeRow(TelaNotaEntrada.getjTable1().getSelectedRow());
+                    model.addLinha(prod);
+                }
+                
+
             }
         } catch (Exception ex) {
             Logger.getLogger(BuscaCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -275,14 +295,14 @@ public class BuscaProduto extends javax.swing.JDialog {
         Controlador c = new Controlador();
         TabelaBuscaProduto model = (TabelaBuscaProduto) jTable1.getModel();
         model.limpaTabela();
-        ResultSet rs = c.pesquisaProduto(jTPesquisa.getText(),"%"+jTPesquisa.getText()+"%");
+        ResultSet rs = c.pesquisaProduto(jTPesquisa.getText(), "%" + jTPesquisa.getText() + "%");
         try {
-            while (rs.next()){
+            while (rs.next()) {
                 Boolean ativo = true;
-                if(rs.getInt("ativo") == 0){
+                if (rs.getInt("ativo") == 0) {
                     ativo = false;
                 }
-                model.addLinha(new ProdutoModel(rs.getString("id"),rs.getString("Descricao"), rs.getString("Quantidade"),ativo));
+                model.addLinha(new ProdutoModel(rs.getString("id"), rs.getString("Descricao"), rs.getString("Quantidade"), ativo));
             }
         } catch (SQLException ex) {
             Logger.getLogger(BuscaFornecedor.class.getName()).log(Level.SEVERE, null, ex);
@@ -293,14 +313,14 @@ public class BuscaProduto extends javax.swing.JDialog {
         Controlador c = new Controlador();
         TabelaBuscaProduto model = (TabelaBuscaProduto) jTable1.getModel();
         model.limpaTabela();
-        ResultSet rs = c.pesquisaProduto(jTPesquisa.getText(),"%"+jTPesquisa.getText()+"%");
+        ResultSet rs = c.pesquisaProduto(jTPesquisa.getText(), "%" + jTPesquisa.getText() + "%");
         try {
-            while (rs.next()){
+            while (rs.next()) {
                 Boolean ativo = true;
-                if(rs.getInt("ativo") == 0){
+                if (rs.getInt("ativo") == 0) {
                     ativo = false;
                 }
-                model.addLinha(new ProdutoModel(rs.getString("id"),rs.getString("Descricao"), rs.getString("Quantidade"),ativo));
+                model.addLinha(new ProdutoModel(rs.getString("id"), rs.getString("Descricao"), rs.getString("Quantidade"), ativo));
             }
         } catch (SQLException ex) {
             Logger.getLogger(BuscaFornecedor.class.getName()).log(Level.SEVERE, null, ex);
@@ -311,14 +331,14 @@ public class BuscaProduto extends javax.swing.JDialog {
         Controlador c = new Controlador();
         TabelaBuscaProduto model = (TabelaBuscaProduto) jTable1.getModel();
         model.limpaTabela();
-        ResultSet rs = c.pesquisaProduto(jTPesquisa.getText(),"%"+jTPesquisa.getText()+"%");
+        ResultSet rs = c.pesquisaProduto(jTPesquisa.getText(), "%" + jTPesquisa.getText() + "%");
         try {
-            while (rs.next()){
+            while (rs.next()) {
                 Boolean ativo = true;
-                if(rs.getInt("ativo") == 0){
+                if (rs.getInt("ativo") == 0) {
                     ativo = false;
                 }
-                model.addLinha(new ProdutoModel(rs.getString("id"),rs.getString("Descricao"), rs.getString("Quantidade"),ativo));
+                model.addLinha(new ProdutoModel(rs.getString("id"), rs.getString("Descricao"), rs.getString("Quantidade"), ativo));
             }
         } catch (SQLException ex) {
             Logger.getLogger(BuscaProduto.class.getName()).log(Level.SEVERE, null, ex);

@@ -5,17 +5,21 @@
  */
 package br.com.view;
 
+import br.com.Renderer.CellRender;
 import br.com.ViewAux.BuscaFornecedor;
 import br.com.control.Controlador;
 import br.com.model.FornecedorModel;
 import br.com.model.ProdutoModel;
 import br.com.tabelas.TabelaNotaEntrada;
+import br.com.utils.FormataDinheiro;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 /**
  *
@@ -48,6 +52,7 @@ public class TelaNotaEntrada extends javax.swing.JDialog {
         this.jTCidade.setText(forn.getCidade());
         this.jTUF.setText(forn.getEstado());
         this.idForn = Integer.parseInt(forn.getId());
+        jTNumNota.setEnabled(true);
     }
 
     /**
@@ -84,10 +89,12 @@ public class TelaNotaEntrada extends javax.swing.JDialog {
         jBtnExclui = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jBtnSair = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         jTVlrNota = new javax.swing.JTextField();
         jTQuantProduto = new javax.swing.JTextField();
+        jBtnAtualizaTotal = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Lançamento de Notas Entrada");
@@ -95,6 +102,7 @@ public class TelaNotaEntrada extends javax.swing.JDialog {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Pesquisa"));
 
+        jTPesquisar.setNextFocusableComponent(jTNumNota);
         jTPesquisar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jTPesquisarFocusLost(evt);
@@ -189,28 +197,39 @@ public class TelaNotaEntrada extends javax.swing.JDialog {
                     .addComponent(jLabel2)
                     .addComponent(jTRazaoSocial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jTCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
-                        .addComponent(jTUF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jTUF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTCnpj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel4)
+                        .addComponent(jTCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jTable1.setModel(new TabelaNotaEntrada(new LinkedList<ProdutoModel>()));
+        jTable1.setModel(new TabelaNotaEntrada(new LinkedList<ProdutoModel>(),this));
+        jTable1.setDefaultRenderer(Object.class, new CellRender());
         jTable1.getColumnModel().getColumn(0).setPreferredWidth(30);
         jTable1.getColumnModel().getColumn(1).setPreferredWidth(250);
         jTable1.getColumnModel().getColumn(2).setPreferredWidth(50);
         jTable1.getColumnModel().getColumn(3).setPreferredWidth(50);
+        jTable1.setSelectionBackground(new java.awt.Color(51, 204, 255));
+        jTable1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTable1FocusLost(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel6.setText("Nº Nota Fiscal :");
 
+        jTNumNota.setEnabled(false);
+        jTNumNota.setNextFocusableComponent(jBtnAdd);
+        jTNumNota.setOpaque(false);
         jTNumNota.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jTNumNotaFocusLost(evt);
@@ -248,6 +267,8 @@ public class TelaNotaEntrada extends javax.swing.JDialog {
 
         jBtnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/Hospital_symbol_24.png"))); // NOI18N
         jBtnAdd.setToolTipText("Inserir Produto");
+        jBtnAdd.setEnabled(false);
+        jBtnAdd.setNextFocusableComponent(jTable1);
         jBtnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBtnAddActionPerformed(evt);
@@ -256,12 +277,20 @@ public class TelaNotaEntrada extends javax.swing.JDialog {
 
         jBtnApagaTudo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/back57.png"))); // NOI18N
         jBtnApagaTudo.setToolTipText("Desfazer Tudo");
+        jBtnApagaTudo.setEnabled(false);
+        jBtnApagaTudo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnApagaTudoActionPerformed(evt);
+            }
+        });
 
         jBtnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/save31.png"))); // NOI18N
         jBtnSalvar.setToolTipText("Salvar");
+        jBtnSalvar.setEnabled(false);
 
         jBtnExclui.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/Minus_sign_in_filled_circle_24.png"))); // NOI18N
         jBtnExclui.setToolTipText("Excluir Produto");
+        jBtnExclui.setEnabled(false);
         jBtnExclui.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBtnExcluiActionPerformed(evt);
@@ -327,13 +356,57 @@ public class TelaNotaEntrada extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jLabel7.setText("Valor Total da Nota :");
+        jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel8.setText("Quantidade de produtos :");
+
+        jLabel7.setText("Valor Total da Nota :");
 
         jTVlrNota.setEditable(false);
 
         jTQuantProduto.setEditable(false);
+        jTQuantProduto.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        jBtnAtualizaTotal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icones/Actualize_arrows_couple_in_circle_24.png"))); // NOI18N
+        jBtnAtualizaTotal.setToolTipText("Atualizar total");
+        jBtnAtualizaTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnAtualizaTotalActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTQuantProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTVlrNota, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jBtnAtualizaTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jBtnAtualizaTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jTVlrNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTQuantProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -348,19 +421,10 @@ public class TelaNotaEntrada extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(323, 323, 323)
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTQuantProduto)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTVlrNota, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -375,15 +439,13 @@ public class TelaNotaEntrada extends javax.swing.JDialog {
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8)
-                    .addComponent(jTVlrNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTQuantProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        getAccessibleContext().setAccessibleDescription("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -426,25 +488,98 @@ public class TelaNotaEntrada extends javax.swing.JDialog {
     }//GEN-LAST:event_jTPesquisarFocusLost
 
     private void jTNumNotaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTNumNotaFocusLost
-        //Validar se existe aquele numero de nota para aquele fornecedor
-
+        Controlador c = new Controlador();
+        ResultSet rs = c.validaNfExiste(idForn.toString(), jTNumNota.getText());
+        try {
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(this, "Nota já lançada anteriormente para este fornecedor!", "ERRO", JOptionPane.ERROR_MESSAGE);
+                jTNumNota.setText(null);
+                jTNumNota.requestFocus();
+            } else if (jTNumNota.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Campo Nº Nota Fiscal vazio!", "ERRO", JOptionPane.ERROR_MESSAGE);
+                jTNumNota.requestFocus();
+            } else {
+                jBtnAdd.setEnabled(true);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaNotaEntrada.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jTNumNotaFocusLost
 
     private void jBtnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnAddActionPerformed
         TabelaNotaEntrada model = (TabelaNotaEntrada) jTable1.getModel();
         model.addLinha(new ProdutoModel());
         jTQuantProduto.setText(String.valueOf(jTable1.getRowCount()));
+        jBtnApagaTudo.setEnabled(true);
+        jBtnExclui.setEnabled(true);
+        jBtnSalvar.setEnabled(true);
+        jTPesquisar.setEnabled(false);
+        jTNumNota.setEditable(false);
+        jTable1.addRowSelectionInterval(jTable1.getRowCount() - 1, jTable1.getRowCount() - 1);
 
     }//GEN-LAST:event_jBtnAddActionPerformed
 
     private void jBtnExcluiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnExcluiActionPerformed
         TabelaNotaEntrada model = (TabelaNotaEntrada) jTable1.getModel();
         model.removeRow(jTable1.getSelectedRow());
+        if (jTable1.getRowCount() > 0) {
+            jTable1.addRowSelectionInterval(jTable1.getRowCount() - 1, jTable1.getRowCount() - 1);
+        }
+        if (jTable1.getRowCount() == 0) {
+            jBtnExclui.setEnabled(false);
+            jBtnSalvar.setEnabled(false);
+        }
     }//GEN-LAST:event_jBtnExcluiActionPerformed
+
+    private void jBtnApagaTudoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnApagaTudoActionPerformed
+        TabelaNotaEntrada model = (TabelaNotaEntrada) jTable1.getModel();
+        model.limpaTabela();
+        jTNumNota.setText(null);
+        jTQuantProduto.setText(null);
+        jTVlrNota.setText(null);
+        jTPesquisar.setEnabled(true);
+        jTNumNota.setEnabled(false);
+        jBtnApagaTudo.setEnabled(false);
+        jBtnExclui.setEnabled(false);
+        jBtnSalvar.setEnabled(false);
+        jBtnAdd.setEnabled(false);
+
+    }//GEN-LAST:event_jBtnApagaTudoActionPerformed
+
+    private void jTable1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTable1FocusLost
+        if (jTable1.getRowCount() > 0 && ((String) jTable1.getValueAt(0, 4) != null)) {
+            Double total = 0.0;
+            for (int i = 0; i < jTable1.getRowCount(); i++) {
+                total = total + FormataDinheiro.moneyForCalc((String) jTable1.getValueAt(i, 4));
+            }
+            if(total > 0)
+                jTVlrNota.setText(FormataDinheiro.moneyForApp(total));
+            //System.out.println("existe linha com valor");
+        }
+    }//GEN-LAST:event_jTable1FocusLost
+
+    private void jBtnAtualizaTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnAtualizaTotalActionPerformed
+        if (jTable1.getRowCount() > 0 && ((String) jTable1.getValueAt(0, 4) != null)) {
+            Double total = 0.0;
+            for (int i = 0; i < jTable1.getRowCount(); i++) {
+                total = total + FormataDinheiro.moneyForCalc((String) jTable1.getValueAt(i, 4));
+            }
+            if(total > 0)
+                jTVlrNota.setText(FormataDinheiro.moneyForApp(total));
+            //System.out.println("existe linha com valor");
+        }
+    }//GEN-LAST:event_jBtnAtualizaTotalActionPerformed
 
     public static JTable getjTable1() {
         return jTable1;
     }
+
+    public static JTextField getjTVlrNota() {
+        return jTVlrNota;
+    }
+    
+    
+
     /**
      * @param args the command line arguments
      */
@@ -490,6 +625,7 @@ public class TelaNotaEntrada extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnAdd;
     private javax.swing.JButton jBtnApagaTudo;
+    private javax.swing.JButton jBtnAtualizaTotal;
     private javax.swing.JButton jBtnExclui;
     private javax.swing.JButton jBtnPesquisar;
     private javax.swing.JButton jBtnSair;
@@ -507,6 +643,7 @@ public class TelaNotaEntrada extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTCidade;
     private javax.swing.JFormattedTextField jTCnpj;
@@ -515,7 +652,7 @@ public class TelaNotaEntrada extends javax.swing.JDialog {
     private javax.swing.JTextField jTQuantProduto;
     private javax.swing.JTextField jTRazaoSocial;
     private javax.swing.JTextField jTUF;
-    private javax.swing.JTextField jTVlrNota;
+    private static javax.swing.JTextField jTVlrNota;
     private static javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

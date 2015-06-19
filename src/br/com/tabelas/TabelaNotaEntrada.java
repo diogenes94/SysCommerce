@@ -9,14 +9,14 @@ import br.com.ViewAux.BuscaProduto;
 import br.com.control.Controlador;
 import br.com.model.ProdutoModel;
 import br.com.utils.FormataDinheiro;
-import br.com.view.TelaCadastroProduto;
+import br.com.view.TelaNotaEntrada;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -25,6 +25,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TabelaNotaEntrada extends AbstractTableModel {
 
+    TelaNotaEntrada tela;
     //nome da coluna da table
     private final String[] colunas = new String[]{"Código", "Descrição", "Quantidade", "Preço", "Preço Total"};
     //lista para a manipulacao do objeto
@@ -55,6 +56,11 @@ public class TabelaNotaEntrada extends AbstractTableModel {
 
     public TabelaNotaEntrada(List<ProdutoModel> listaRegistro) {
         this.listaRegistro = listaRegistro;
+    }
+
+    public TabelaNotaEntrada(List<ProdutoModel> listaRegistro, TelaNotaEntrada tela) {
+        this.listaRegistro = listaRegistro;
+        this.tela = tela;
     }
 
     //numero de linhas
@@ -94,17 +100,20 @@ public class TabelaNotaEntrada extends AbstractTableModel {
         if (valor == null) {
             return;
         }
-        switch(coluna){
+        switch (coluna) {
             case 0:
                 listaRegistro.get(linha).setId((String) valor);
-                valor=null;
+                valor = null;
             case 2:
                 listaRegistro.get(linha).setQuantidade((String) valor);
+                valor = null;
             case 3:
-                listaRegistro.get(linha).setPreco((String) valor);
+                listaRegistro.get(linha).setPrecoCusto((String) valor);
+                valor = null;
             case 4:
                 listaRegistro.get(linha).setVlrTotal((String) valor);
-         }
+
+        }
         fireTableCellUpdated(linha, coluna);
     }
 
@@ -137,28 +146,43 @@ public class TabelaNotaEntrada extends AbstractTableModel {
     public void fireTableCellUpdated(int row, int column) {
         if (column == 0) {
             Controlador c = new Controlador();
+            ResultSet rsDesc = c.pesquisaProdutoId(listaRegistro.get(row).getId());
             ResultSet rs = c.pesquisaProduto(listaRegistro.get(row).getId(), "%" + listaRegistro.get(row).getId() + "%");
             try {
-                if (rs.last() && rs.getRow() == 1) {
+                if (rsDesc.last() && rsDesc.getRow() == 1) {
+                    rsDesc.first();
+                    if (rsDesc.getBoolean("ativo")) {
+                        listaRegistro.get(row).setDescricao(rsDesc.getString("descricao"));
+                        listaRegistro.get(row).setId(rsDesc.getString("id"));
+                    }else{
+                        JOptionPane.showMessageDialog(tela, "Produto inativo, indisponível para venda!","ERRO",JOptionPane.ERROR_MESSAGE);
+                        listaRegistro.get(row).setId(null);
+                        return;
+                    }
+                } else if (rs.last() && rs.getRow() == 1) {
                     rs.first();
                     listaRegistro.get(row).setDescricao(rs.getString("descricao"));
                     listaRegistro.get(row).setId(rs.getString("id"));
                 } else {
-                    new BuscaProduto(null, true, listaRegistro.get(row).getId(), null).setVisible(true);
+                    new BuscaProduto(null, true, listaRegistro.get(row).getId(), tela).setVisible(true);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(TabelaNotaEntrada.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else if (column == 3){
+        } else if (column == 2) {
             Double quant = Double.parseDouble(listaRegistro.get(row).getQuantidade().replaceAll("[,]", "."));
-            Double preco = Double.parseDouble(listaRegistro.get(row).getPreco().replaceAll("[,]", "."));
-            Double total = preco*quant;
+            listaRegistro.get(row).setQuantidade(FormataDinheiro.moneyForApp(quant));
+        } else if (column == 3) {
+
+            Double quant = Double.parseDouble(listaRegistro.get(row).getQuantidade().replaceAll("[,]", "."));
+            Double preco = Double.parseDouble(listaRegistro.get(row).getPrecoCusto().replaceAll("[,]", "."));
+            Double total = preco * quant;
+
             listaRegistro.get(row).setQuantidade(FormataDinheiro.moneyForApp(quant));
             listaRegistro.get(row).setVlrTotal(FormataDinheiro.moneyForApp(total));
             listaRegistro.get(row).setPrecoCusto(FormataDinheiro.moneyForApp(preco));
         }
-        
-        
+
         super.fireTableCellUpdated(row, column); //To change body of generated methods, choose Tools | Templates.
     }
 
